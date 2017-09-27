@@ -1,6 +1,36 @@
 ---
 - hosts: all
 
+  gather_facts: no
+  become: true
+
   tasks:
 
-  - debug: msg="Adding host to inventory"
+#  - debug: msg="Adding host to inventory"
+
+  - name: add docker group
+    group: name=docker
+
+  - name: add vagrant user to docker group
+    user: name=vagrant groups=docker
+
+  - name: set default editor to vi
+    lineinfile: dest=/etc/environment line=EDITOR=vi
+    
+  - name: reduce swappiness
+    sysctl:
+      name: vm.swappiness
+      value: 0
+      sysctl_set: yes
+      sysctl_file: /etc/sysctl.d/reduce_swappiness.conf
+
+  - name: install jq
+    get_url:
+      url:  https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
+      dest: /usr/local/bin/jq
+      mode: a+x
+
+  - name: create Json Path Search shell function
+    copy:
+      content: !unsafe jps () { jq -r -M --arg key "$1" 'paths | select(.[-1]|strings|test($key;"i")) | [.[]|tostring] | join(".") | "." + .[2:]' | sort -u; } 
+      dest: /etc/profile.d/jps.sh

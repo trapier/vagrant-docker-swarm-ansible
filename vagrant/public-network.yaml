@@ -1,20 +1,26 @@
 ---
-- name: manager-01
-  ip: 192.168.1.150
+- name: node01
+  ip: 192.168.133.150
+  memory: 2560
+  alias: "ucp.example.com"
 
-- name: manager-02
-  ip: 192.168.1.151
+- name: node02
+  memory: 2560
+  ip: 192.168.133.151
 
-- name: engine-01
-  ip: 192.168.1.152
+- name: node03
+  memory: 2560
+  ip: 192.168.133.152
 
-- name: engine-02
-  ip: 192.168.1.153
+- name: node04
+  ip: 192.168.133.153
+  memory: 2560
+  alias: "dtr.example.com"
 
-- name: engine-03
-  ip: 192.168.1.154
+- name: node05
+  memory: 2560
+  ip: 192.168.133.154
 
-- name: engine-04
-  ip: 192.168.1.155
-
-- name: consul-01
+- name: node06
+  memory: 2560
+  ip: 192.168.133.155
